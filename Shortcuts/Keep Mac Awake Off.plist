@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>WFQuickActionSurfaces</key>
+	<array/>
+	<key>WFWorkflowActions</key>
+	<array>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.runshellscript</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>RunAsRoot</key>
+				<true/>
+				<key>Script</key>
+				<string>#!/bin/zsh
+# Restore normal sleep eligibility without changing existing sleep/display timers.
+set -eu
+
+print 'Restoring normal sleep behavior.'
+print 'macOS may ask for your administrator password; typing is invisible.'
+/usr/bin/sudo /usr/bin/pmset -a disablesleep 0
+power_settings=$(/usr/bin/pmset -g)
+if ! print -r -- "$power_settings" | /usr/bin/awk '$1 == "SleepDisabled" &amp;&amp; $2 == 0 { found=1 } END { exit !found }'; then
+    print -u2 'Could not verify SleepDisabled=0. Check: pmset -g'
+    exit 1
+fi
+print 'Keep-awake is OFF. Normal sleep is allowed again.'
+print 'Your existing sleep and display timers are unchanged.'
+print 'If Amphetamine or another keep-awake app is active, end its session too.'
+</string>
+				<key>Shell</key>
+				<string>/bin/zsh</string>
+				<key>UUID</key>
+				<string>D7060351-285F-40FB-AF46-9E3DBF442726</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.output</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>WFOutput</key>
+				<dict>
+					<key>Value</key>
+					<dict>
+						<key>attachmentsByRange</key>
+						<dict>
+							<key>{0, 1}</key>
+							<dict>
+								<key>OutputName</key>
+								<string>Shell Script Result</string>
+								<key>OutputUUID</key>
+								<string>D7060351-285F-40FB-AF46-9E3DBF442726</string>
+								<key>Type</key>
+								<string>ActionOutput</string>
+							</dict>
+						</dict>
+						<key>string</key>
+						<string>￼</string>
+					</dict>
+					<key>WFSerializationType</key>
+					<string>WFTextTokenString</string>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+	<key>WFWorkflowClientVersion</key>
+	<string>2600</string>
+	<key>WFWorkflowHasOutputFallback</key>
+	<false/>
+	<key>WFWorkflowHasShortcutInputVariables</key>
+	<false/>
+	<key>WFWorkflowIcon</key>
+	<dict>
+		<key>WFWorkflowIconGlyphNumber</key>
+		<integer>61440</integer>
+		<key>WFWorkflowIconStartColor</key>
+		<integer>1440408063</integer>
+	</dict>
+	<key>WFWorkflowImportQuestions</key>
+	<array/>
+	<key>WFWorkflowInputContentItemClasses</key>
+	<array/>
+	<key>WFWorkflowMinimumClientVersion</key>
+	<integer>900</integer>
+	<key>WFWorkflowMinimumClientVersionString</key>
+	<string>900</string>
+	<key>WFWorkflowName</key>
+	<string>Keep Mac Awake Off</string>
+	<key>WFWorkflowOutputContentItemClasses</key>
+	<array>
+		<string>WFGenericFileContentItem</string>
+	</array>
+	<key>WFWorkflowTypes</key>
+	<array>
+		<string>WFWorkflowTypeShowInSearch</string>
+	</array>
+</dict>
+</plist>
